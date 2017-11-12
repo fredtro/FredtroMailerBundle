@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <services>
+        <service id="fretro.mailer" class="Fredtro\MailerBundle\Mailer\Mailer">
+            <argument type="service" id="twig" />
+            <argument type="service" id="mailer" />
+            <argument type="service" id="event_dispatcher" />
+            <argument>%fredtro_mailer.config%</argument>
+        </service>
+        <service id="twig.mailer" alias="fretro.mailer" />
+    </services>
+</container>

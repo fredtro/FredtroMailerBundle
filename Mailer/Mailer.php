@@ -3,10 +3,12 @@
 
 namespace Fredtro\MailerBundle\Mailer;
 
+use Fredtro\MailerBundle\Event\MailerEvents;
 use Fredtro\MailerBundle\Exception\InvalidBlocksException;
 use Fredtro\MailerBundle\Exception\NoRecipientException;
 use Fredtro\MailerBundle\Model\Mailer\Config;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 
 /**
@@ -86,11 +88,19 @@ class Mailer implements MailerInterface
 
         $this->setBody($message, $textBody, $htmlBody);
 
+        //dispatch before sent event
+        $this->eventDispatcher->dispatch(MailerEvents::BEFORE_EMAIL_SENT, $mailerEvent = new GenericEvent($message));
+
         if ($callback instanceof \Closure) {
             $callback($message);
         }
 
-        return $this->mailer->send($message);
+        $sent = $this->mailer->send($message);
+
+        //dispatch with sent info
+        $this->eventDispatcher->dispatch('email.sent.complete', $mailerEvent->setArgument('sent', $sent));
+
+        return $sent;
     }
 
     /**

@@ -43,7 +43,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $twig = $this->getTwigEnvironment();
         $mailer = $this->getSwiftMailer();
-        $eventDispatcherMock = \Mockery::mock(EventDispatcherInterface::class);
+        $eventDispatcherMock = \Mockery::mock(EventDispatcherInterface::class)->shouldIgnoreMissing();
         $config = ['foo@example.com'];
 
         return new Mailer($twig, $mailer, $eventDispatcherMock, $config);

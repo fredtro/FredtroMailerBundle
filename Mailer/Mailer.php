@@ -4,7 +4,7 @@
 namespace Fredtro\MailerBundle\Mailer;
 
 use Fredtro\MailerBundle\Event\MailerEvents;
-use Fredtro\MailerBundle\Exception\InvalidBlocksException;
+use Fredtro\MailerBundle\Exception\BlockNotDefinedException;
 use Fredtro\MailerBundle\Exception\NoRecipientException;
 use Fredtro\MailerBundle\Model\Mailer\Config;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -98,7 +98,7 @@ class Mailer implements MailerInterface
         $sent = $this->mailer->send($message);
 
         //dispatch with sent info
-        $this->eventDispatcher->dispatch('email.sent.complete', $mailerEvent->setArgument('sent', $sent));
+        $this->eventDispatcher->dispatch(MailerEvents::EMAIL_SENT, $mailerEvent->setArgument('sent', $sent));
 
         return $sent;
     }
@@ -135,7 +135,7 @@ class Mailer implements MailerInterface
     protected function setBody(\Swift_Message $message, $textBody, $htmlBody)
     {
         if (empty($textBody) && empty($htmlBody)) {
-            throw new InvalidBlocksException();
+            throw new BlockNotDefinedException(empty($textBody) ? 'text' : 'html');
         }
 
         if (!empty($htmlBody)) {

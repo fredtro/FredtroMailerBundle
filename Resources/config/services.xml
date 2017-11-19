@@ -10,7 +10,6 @@
             <argument type="service" id="twig" />
             <argument type="service" id="mailer" />
             <argument type="service" id="event_dispatcher" />
-            <argument>%fredtro_mailer.config%</argument>
         </service>
         <service id="twig.mailer" alias="fretro.mailer" />
     </services>

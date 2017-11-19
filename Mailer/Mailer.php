@@ -45,31 +45,32 @@ class Mailer implements MailerInterface
      * @param \Twig_Environment $twig
      * @param \Swift_Mailer $mailer
      * @param EventDispatcherInterface $eventDispatcher
-     * @param array $config
+     * @param Config $config
      */
     public function __construct(
         \Twig_Environment $twig,
         \Swift_Mailer $mailer,
         EventDispatcherInterface $eventDispatcher,
-        array $config
+        Config $config
     ) {
         $this->twig = $twig;
         $this->mailer = $mailer;
         $this->eventDispatcher = $eventDispatcher;
-        $this->config = new Config($config);
+        $this->config = $config;
     }
 
     /**
+     * returns swiftmailer result
+     *
      * @param $template
      * @param $to
      * @param array $context
-     * @param array $from
      * @param \Closure|null $callback
      * @return int
      * @throws \Exception
      * @throws \Throwable
      */
-    public function sendMessage($template, $to, $context = array(), $from = array(), \Closure $callback = null)
+    public function send($template, $to, $context = array(),\Closure $callback = null)
     {
         if (empty($to)) {
             throw new NoRecipientException();
@@ -80,7 +81,7 @@ class Mailer implements MailerInterface
 
         $message = (new \Swift_Message())
             ->setSubject($subject)
-            ->setFrom(!empty($from) ? $from : $this->config->getFrom())
+            ->setFrom($this->config->getFrom())
             ->setTo($to);
 
         $textBody = $this->renderTextBlock($loadedTemplate, $context);

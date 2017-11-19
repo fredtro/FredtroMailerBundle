@@ -18,9 +18,8 @@ interface MailerInterface
      * @param $template
      * @param $to
      * @param array $context
-     * @param array $from
      * @param \Closure $callback
      * @return int
      */
-    public function sendMessage($template, $to, $context = array(), $from = array(), \Closure $callback = null);
+    public function send($template, $to, $context = array(), \Closure $callback = null);
 }

@@ -3,6 +3,7 @@
 namespace Tests\Mailer;
 
 use Fredtro\MailerBundle\Mailer\Mailer;
+use Fredtro\MailerBundle\Model\Mailer\Config;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -18,10 +19,13 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMail()
     {
-        $mailer = $this->getMailer();
-        $this->assertEquals(1, $mailer->sendMessage('valid/template_html.twig', 'foo@example.com'));
-        $this->assertEquals(1, $mailer->sendMessage('valid/template_html_text.twig', 'foo@example.com'));
-        $this->assertEquals(1, $mailer->sendMessage('valid/template_text.twig', 'foo@example.com'));
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherMock->expects($this->exactly(6))->method('dispatch');
+
+        $mailer = $this->getMailer($eventDispatcherMock);
+        $this->assertEquals(1, $mailer->send('valid/template_html.twig', 'foo@example.com'));
+        $this->assertEquals(1, $mailer->send('valid/template_html_text.twig', 'foo@example.com'));
+        $this->assertEquals(1, $mailer->send('valid/template_text.twig', 'foo@example.com'));
     }
 
     /**
@@ -29,30 +33,31 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoRecipientException()
     {
-        $mailer = $this->getMailer();
-        $mailer->sendMessage('valid_template.twig', null);
+        $mailer = $this->getMailer($this->createMock(EventDispatcherInterface::class));
+        $mailer->send('valid_template.twig', null);
     }
 
     /**
-     * @expectedException \Fredtro\MailerBundle\Exception\InvalidBlocksException
+     * @expectedException \Fredtro\MailerBundle\Exception\BlockNotDefinedException
      */
     public function testInvalidBlocksException()
     {
-        $mailer = $this->getMailer();
-        $mailer->sendMessage('invalid/template_missing_blocks.twig', 'foo@example.com');
+        $mailer = $this->getMailer($this->createMock(EventDispatcherInterface::class));
+        $mailer->send('invalid/template_missing_blocks.twig', 'foo@example.com');
     }
 
     /**
+     * @param $eventDispatcherMock
      * @return Mailer
      */
-    private function getMailer()
+    private function getMailer($eventDispatcherMock)
     {
         $twig = $this->getTwigEnvironment();
         $mailer = $this->getSwiftMailer();
-        $eventDispatcherMock = \Mockery::mock(EventDispatcherInterface::class)->shouldIgnoreMissing();
+
         $config = ['foo@example.com'];
 
-        return new Mailer($twig, $mailer, $eventDispatcherMock, $config);
+        return new Mailer($twig, $mailer, $eventDispatcherMock, new Config($config));
     }
 
     /**
@@ -70,7 +75,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = new \Swift_Mailer(
             new \Swift_Transport_NullTransport(
-                \Mockery::mock(\Swift_Events_EventDispatcher::class)->shouldIgnoreMissing()
+                $this->createMock(\Swift_Events_EventDispatcher::class)
             )
         );
 

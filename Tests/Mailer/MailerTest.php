@@ -5,6 +5,12 @@ namespace Tests\Mailer;
 use Fredtro\MailerBundle\Mailer\Mailer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ *
+ * @author Frederik Trostorf <fredtrostorf@gmail.com>
+ *
+ * Class MailerTest
+ */
 class MailerTest extends \PHPUnit_Framework_TestCase
 {
     /**

@@ -1,4 +1,5 @@
-#FredtroMailerBundle
+FredtroMailerBundle
+===================
 
 Provides mailer for sending emails using twig templates. Initially inspired by [FOSUserBundle TwigSwiftMailer](https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Mailer/TwigSwiftMailer.php).
 
@@ -85,7 +86,7 @@ public function someAction(){
 
 Additional features:
 ----------------------
-###Callback
+Callback
 
 For access the \Swift_Message created before sending, you can pass a callback (Instance of Closure). You can use this for e.g. adding attachments, set reply or anything else related to the message object.
 
@@ -102,7 +103,7 @@ public function someAction(){
 
 ```
 
-###Events
+Events
 ```php
 
 Before sending email: Fredtro\MailerBundle\Event\MailerEvents::BEFORE_EMAIL_SENT

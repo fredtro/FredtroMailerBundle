@@ -60,12 +60,57 @@ fredtro_mailer:
 Step 4: Sending Emails
 --------------------------
 
+Define a twig template:
+
+```twig
+
+{% block subject %}subject{% endblock %}
+{% block text %}Hello {{username}}!{% endblock %}
+{% block html %}<h1>Hello {{username}}!</h1>{% endblock %}
+
+```
+
+Send mail:
+
+
 ```php
 
 public function someAction(){
 
     $mailer = $this->get('fredtro.mailer');
-    $mailer->send('template.twig', 'bar@example.com');
+    $mailer->send('template.twig', 'bar@example.com', ['username' => 'fred']);
 }
 
 ```
+
+Additional features:
+----------------------
+###Callback
+
+For access the \Swift_Message created before sending, you can pass a callback (Instance of Closure). You can use this for e.g. adding attachments, set reply or anything else related to the message object.
+
+```php
+
+public function someAction(){
+
+    $mailer = $this->get('fredtro.mailer');
+    $mailer->send('template.twig', 'bar@example.com', ['username' => 'fred'], function(\Swift_Message $message){
+        //do your modifications here
+        $message->setFrom(['somebodyelse@example.com']);
+    });
+}
+
+```
+
+###Events
+```php
+
+Before sending email: Fredtro\MailerBundle\Event\MailerEvents::BEFORE_EMAIL_SENT
+
+After sending email: Fredtro\MailerBundle\Event\MailerEvents::EMAIL_SENT
+
+```
+
+Both use the Generic Event class from Symfony. The EMAIL_SENT event additionally provides the attribute 'sent', containing the swift result ([Mailer](https://github.com/fredtro/FredtroMailerBundle/blob/master/Mailer/Mailer.php)).
+
+

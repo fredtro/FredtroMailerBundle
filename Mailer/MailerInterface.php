@@ -3,8 +3,6 @@
 
 namespace Fredtro\MailerBundle\Mailer;
 
-use Fredtro\MailerBundle\Model\Mailer\Config;
-
 
 /**
  *

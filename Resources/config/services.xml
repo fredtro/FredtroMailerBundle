@@ -6,11 +6,11 @@
 
 
     <services>
-        <service id="fretro.mailer" class="Fredtro\MailerBundle\Mailer\Mailer">
+        <service id="fredtro.mailer" class="Fredtro\MailerBundle\Mailer\Mailer">
             <argument type="service" id="twig" />
             <argument type="service" id="mailer" />
             <argument type="service" id="event_dispatcher" />
         </service>
-        <service id="twig.mailer" alias="fretro.mailer" />
+        <service id="twig.mailer" alias="fredtro.mailer" />
     </services>
 </container>

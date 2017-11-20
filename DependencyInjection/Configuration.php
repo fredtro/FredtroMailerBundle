@@ -18,13 +18,14 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fred_tro_mailer');
+        $rootNode = $treeBuilder->root('fredtro_mailer');
 
         $rootNode
             ->children()
                 ->arrayNode('from')
+                    ->isRequired()
                     ->children()
-                        ->scalarNode('address')->end()
+                        ->scalarNode('address')->isRequired()->end()
                         ->scalarNode('name')->defaultValue('')->end()
                     ->end()
                 ->end()

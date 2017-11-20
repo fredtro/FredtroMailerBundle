@@ -33,7 +33,7 @@ class FredtroMailerExtension extends Extension
         //build config and set as argument form mailer
         $configDef = new Definition(Config::class, [$from]);
         $container
-            ->getDefinition('fretro.mailer')
+            ->getDefinition('fredtro.mailer')
             ->addArgument($configDef);
     }
 }

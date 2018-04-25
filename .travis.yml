@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - hhvm
+
+cache:
+    directories:
+      - $HOME/.composer/cache/files
+
+before_script:
+  - echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - composer install -n --prefer-dist
+
+script: vendor/bin/phpcs --extensions=php --ignore=Tests,vendor --standard=PSR2 ./  && vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover

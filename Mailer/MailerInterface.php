@@ -3,7 +3,6 @@
 
 namespace Fredtro\MailerBundle\Mailer;
 
-
 /**
  *
  * @author Frederik Trostorf <frederik.trostorf@ongoing.ch>

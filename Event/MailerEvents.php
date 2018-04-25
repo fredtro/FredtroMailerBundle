@@ -3,7 +3,6 @@
 
 namespace Fredtro\MailerBundle\Event;
 
-
 /**
  *
  * @author Frederik Trostorf <frederik.trostorf@ongoing.ch>

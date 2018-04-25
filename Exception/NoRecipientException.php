@@ -5,7 +5,6 @@ namespace Fredtro\MailerBundle\Exception;
 
 use Exception;
 
-
 /**
  *
  * @author Frederik Trostorf <frederik.trostorf@ongoing.ch>
@@ -18,5 +17,4 @@ class NoRecipientException extends \InvalidArgumentException
     {
         parent::__construct('Cannot send email without a recipient.', $code, $previous);
     }
-
 }

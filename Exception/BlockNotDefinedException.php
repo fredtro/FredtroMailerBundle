@@ -5,7 +5,6 @@ namespace Fredtro\MailerBundle\Exception;
 
 use Prophecy\Exception\Exception;
 
-
 /**
  *
  * @author Frederik Trostorf <fredtrostorf@gmail.com>

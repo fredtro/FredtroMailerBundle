@@ -10,7 +10,6 @@ use Fredtro\MailerBundle\Model\Mailer\Config;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-
 /**
  *
  * @author Frederik Trostorf <frederik.trostorf@ongoing.ch>
@@ -70,7 +69,7 @@ class Mailer implements MailerInterface
      * @throws \Exception
      * @throws \Throwable
      */
-    public function send($template, $to, $context = array(),\Closure $callback = null)
+    public function send($template, $to, $context = array(), \Closure $callback = null)
     {
         if (empty($to)) {
             throw new NoRecipientException();
